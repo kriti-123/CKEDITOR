@@ -1,20 +1,46 @@
-import { Component } from '@angular/core';
+import { AfterViewInit, ElementRef, Component } from '@angular/core';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
-import DecoupledEditor from '@ckeditor/ckeditor5-build-decoupled-document';
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrl: './app.component.css',
 })
-export class AppComponent {
-  title = 'editor4';
-  public Editor = DecoupledEditor;
-  // public Editor = ClassicEditor;
+export class AppComponent implements AfterViewInit {
+  constructor(private elementRef: ElementRef) {}
 
-  public onReady(editor: DecoupledEditor): void {
-    const element = editor.ui.getEditableElement()!;
-    const parent = element.parentElement!;
+  ngAfterViewInit() {
+    const editorElement = this.elementRef.nativeElement.querySelector(
+      '#editor'
+    ) as HTMLElement;
+    const editorElement2 = this.elementRef.nativeElement.querySelector(
+      '#editor2'
+    ) as HTMLElement;
 
-    parent.insertBefore(editor.ui.view.toolbar.element!, element);
+    if (editorElement) {
+      ClassicEditor.create(editorElement, {
+        placeholder: 'Type the content here!',
+      })
+        .then((editor) => {
+          console.log(editor);
+        })
+        .catch((error) => {
+          console.error(error);
+        });
+    } else {
+      console.error('Editor element not found.');
+    }
+    if (editorElement2) {
+      ClassicEditor.create(editorElement2, {
+        placeholder: 'Type the content here!',
+      })
+        .then((editor) => {
+          console.log(editor);
+        })
+        .catch((error) => {
+          console.error(error);
+        });
+    } else {
+      console.error('Editor element not found.');
+    }
   }
 }
